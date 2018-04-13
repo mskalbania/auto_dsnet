@@ -10,13 +10,23 @@
  *******************************************************************************
  *----------------------------------------------------------------------------*/
 
-public class App {
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-    public static void main(String[] args) {
+public class FootballReservationHandler {
 
+    private AvailabilityTable table;
 
-        Session session = Session.openSession("cod634.steam@gmail.com", "Guccio11guccio2");
-        FootballReservationHandler frh = new FootballReservationHandler(session);
+    FootballReservationHandler(Session session) {
+        table = AvailabilityTable.extractTable(session);
+    }
 
+    public boolean reserve(LocalTime time, LocalDate date, ReserveMethod reserveMethod) {
+        //TODO
+        return false;
+    }
+
+    public enum ReserveMethod {
+        ALL_BEFORE, ALL_AFTER
     }
 }

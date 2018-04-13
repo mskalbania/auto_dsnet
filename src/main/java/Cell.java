@@ -10,13 +10,15 @@
  *******************************************************************************
  *----------------------------------------------------------------------------*/
 
-public class App {
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-    public static void main(String[] args) {
+public class Cell {
+
+    private LocalTime time;
+    private LocalDate date;
+    private boolean isAvailableToReserve;
+    private String reserveUrl;
 
 
-        Session session = Session.openSession("cod634.steam@gmail.com", "Guccio11guccio2");
-        FootballReservationHandler frh = new FootballReservationHandler(session);
-
-    }
 }
