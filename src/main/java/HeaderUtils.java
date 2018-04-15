@@ -10,7 +10,10 @@
  *******************************************************************************
  *----------------------------------------------------------------------------*/
 
+import org.apache.http.Header;
 import org.apache.http.HttpMessage;
+
+import java.util.Arrays;
 
 public class HeaderUtils {
 
@@ -35,5 +38,9 @@ public class HeaderUtils {
         message.addHeader(UPGRD_INS_REQ, "1");
         message.addHeader(USER_AGENT, DEFAULT_AGENT);
         message.addHeader(CONTENT_TYPE, DEFAULT_CONT_TYPE);
+    }
+
+    public static void supplyWithHeaders(HttpMessage message, Header... headers) {
+        Arrays.stream(headers).forEach(message::addHeader);
     }
 }

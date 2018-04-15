@@ -17,11 +17,13 @@ public class FootballReservationHandler {
 
     private AvailabilityTable table;
 
-    FootballReservationHandler(Session session) {
-        table = AvailabilityTable.extractTable(session);
+    FootballReservationHandler(SessionManager sessionManager) {
+        table = AvailabilityTable.extractTable(sessionManager);
     }
 
     public boolean reserve(LocalTime time, LocalDate date, ReserveMethod reserveMethod) {
+        table.getSideCCells();
+
         //TODO
         return false;
     }

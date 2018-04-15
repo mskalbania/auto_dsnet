@@ -10,71 +10,73 @@
  *******************************************************************************
  *----------------------------------------------------------------------------*/
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.List;
 
 public class AvailabilityTable {
 
-    private static final String RESERVATIONS_URL = "https://panel.dsnet.agh.edu.pl/reserv/";
+	private ConnectionsHandler connHandl;
+	private SessionManager sessionManager;
+	private List<Cell> sideB;
+	private List<Cell> sideC;
+	private String sideBURL;
+	private String sideCURL;
 
-    private static String sideBURL;
-    private static String sideCURL;
+	private AvailabilityTable(SessionManager sessionManager) {
+		this.connHandl = new ConnectionsHandler(sessionManager, false);
+		this.sessionManager = sessionManager;
+		setUpUrls();
+	}
 
-    private Session session;
-    private List<Cell> sideA;
-    private List<Cell> sideB;
+	public static AvailabilityTable extractTable(SessionManager sessionManager) {
+		return new AvailabilityTable(sessionManager);
+	}
 
-    private AvailabilityTable(Session session) {
-        this.session = session;
-        sideBURL = extractSideTableURL("Część B");
-        sideCURL = extractSideTableURL("Część C");
-    }
+	public List<Cell> getSideBCells() {
+		if (sideB == null) {
+			parseCells(sideBURL);
+		}
+		return sideB;
+	}
 
-    public static AvailabilityTable extractTable(Session session) {
-        return new AvailabilityTable(session);
-    }
+	public List<Cell> getSideCCells() {
+		if (sideC == null) {
+			parseCells(sideCURL);
+		}
+		return sideC;
+	}
 
-
-    private String extractSideTableURL(String regex) {
-        HttpClient client = HttpClientBuilder.create().disableRedirectHandling().build();
-        HttpGet request = new HttpGet(RESERVATIONS_URL);
-
-        HeaderUtils.supplyWithDefaultHeaders(request);
-        request.addHeader(session.getSessionHeader());
-
-        try {
-            HttpResponse response = client.execute(request);
-
-            HttpEntity entity = response.getEntity();
-
-            String htmlSite = "";
-
-            if (entity != null) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-                String line = "";
-                StringBuilder sb = new StringBuilder();
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-                htmlSite = sb.toString();
-            }
-
-            Document fullPage = Jsoup.parse(htmlSite);
+	private void parseCells(String url) {
+		try {
+			sessionManager.openSession();
+			Document page = connHandl.getPageDocument(url);
+			System.out.println(page.toString());
 
 
-        } catch (Exception e) {
-            System.out.println("ERROR WHILE GETTING RESERVATIONS PAGE");
-            e.printStackTrace();
-        }
-        return "";
-    }
+			System.out.println();
+		} catch (IOException e) {
+			System.err.println("ERROR WHILE PARSING CELLS \n");
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+
+	}
+
+	private void setUpUrls() {
+		try {
+			Document page = connHandl.getPageDocument(ConnectionsHandler.DOMAIN + ConnectionsHandler.RESERV_ENDPOINT);
+			sideBURL = ConnectionsHandler.DOMAIN + extractSideTableURL(page, "Część \"B\"");
+			sideCURL = ConnectionsHandler.DOMAIN + extractSideTableURL(page, "Część \"C\"");
+		} catch (IOException e) {
+			System.err.println("ERROR WHILE EXTRACTING RESERVATION URLS \n");
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+	}
+
+	private String extractSideTableURL(Document document, String side) {
+		return document.getElementsContainingText(side).attr("href");
+	}
 }

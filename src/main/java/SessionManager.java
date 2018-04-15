@@ -18,31 +18,32 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 
-public class Session {
+public class SessionManager {
 
     private final String LOGIN_URL = "https://panel.dsnet.agh.edu.pl/login_check";
 
     private Header sessionHeader;
     private HttpClient client;
 
-    private Session(String email, String password) {
-        setupSessionHeader(email, password);
-    }
+    private String password;
+    private String email;
 
-    public static Session openSession(final String email, final String password) {
-        return new Session(email, password);
+    SessionManager(String email, String password) {
+        this.email = email;
+        this.password = password;
+        openSession();
     }
 
     public Header getSessionHeader() {
         return this.sessionHeader;
     }
 
-    private void setupSessionHeader(final String email, final String password) {
+    public void openSession() {
         client = HttpClientBuilder.create().disableRedirectHandling().build();
 
         HttpPost request = new HttpPost(LOGIN_URL);
         HeaderUtils.supplyWithDefaultHeaders(request);
-        String postParams = preparePostParams(email, password);
+        String postParams = preparePostParams();
         request.setEntity(EntityBuilder.create().setBinary(postParams.getBytes()).build());
 
         try {
@@ -55,7 +56,7 @@ public class Session {
         }
     }
 
-    private String preparePostParams(final String email, final String password) {
+    private String preparePostParams() {
         String[] emailSplit = email.split("@");
         return "_username=" + emailSplit[0] + "%40" + emailSplit[1] + "&_password=" + password;
     }

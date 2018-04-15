@@ -12,11 +12,14 @@
 
 public class App {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
+
+		ArgumentUtils argumentUtils = new ArgumentUtils(args);
+
+		SessionManager sessionManager = new SessionManager(argumentUtils.getEmail(), argumentUtils.getPassword());
+		FootballReservationHandler frh = new FootballReservationHandler(sessionManager);
+		frh.reserve(null, null, null);
+	}
 
 
-        Session session = Session.openSession("cod634.steam@gmail.com", "Guccio11guccio2");
-        FootballReservationHandler frh = new FootballReservationHandler(session);
-
-    }
 }
