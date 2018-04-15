@@ -18,6 +18,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 
+//TODO Rewrite session manager - old style
+
 public class SessionManager {
 
     private final String LOGIN_URL = "https://panel.dsnet.agh.edu.pl/login_check";

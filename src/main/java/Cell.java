@@ -20,5 +20,26 @@ public class Cell {
     private boolean isAvailableToReserve;
     private String reserveUrl;
 
+    public Cell(LocalTime time, LocalDate date, boolean isAvailableToReserve, String reserveUrl) {
+        this.time = time;
+        this.date = date;
+        this.isAvailableToReserve = isAvailableToReserve;
+        this.reserveUrl = reserveUrl;
+    }
 
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public boolean isAvailableToReserve() {
+        return isAvailableToReserve;
+    }
+
+    public String getReserveUrl() {
+        return reserveUrl;
+    }
 }

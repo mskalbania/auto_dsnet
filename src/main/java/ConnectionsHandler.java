@@ -17,23 +17,17 @@ public class ConnectionsHandler {
 
 	private SessionManager sessionManager;
 
-	private HttpClient httpClient;
-
-	public ConnectionsHandler(SessionManager sessionManager, boolean redirectsHandlingEnabled) {
+	public ConnectionsHandler(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;
-
-		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-		httpClient = redirectsHandlingEnabled ?
-				httpClientBuilder.build() : httpClientBuilder.disableRedirectHandling().build();
 	}
 
 	public Document getPageDocument(String url) throws IOException {
+		HttpClient httpClient = HttpClientBuilder.create().disableRedirectHandling().build();
 
 		HttpGet getRequest = new HttpGet(url);
 		HeaderUtils.supplyWithDefaultHeaders(getRequest);
 		HeaderUtils.supplyWithHeaders(getRequest, sessionManager.getSessionHeader());
 
-		System.out.println();
 		HttpResponse response = httpClient.execute(getRequest);
 		String html = getHtmlString(response.getEntity());
 		return Jsoup.parse(html);
