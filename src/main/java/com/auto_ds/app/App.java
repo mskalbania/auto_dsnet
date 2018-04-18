@@ -12,23 +12,6 @@ import java.time.LocalTime;
 
 public class App {
 
-    public static void main(String[] args) throws IOException {
-
-        if (ArgumentUtils.isHelpFlagPresent(args)) {
-            System.out.println(getHelpMessage());
-        } else {
-
-            ArgumentUtils argumentUtils = new ArgumentUtils(args);
-
-            if (argumentUtils.areCredentialsPresent()) {
-                App app = new App();
-                app.startApp(argumentUtils);
-            } else {
-                System.out.println(getHelpMessage());
-            }
-        }
-    }
-
     public static String getHelpMessage() {
         return "HELP: \n" +
                 "  Available arguments: \n" +
@@ -45,15 +28,15 @@ public class App {
 
     }
 
-    public void startApp(ArgumentUtils argumentUtils) throws IOException {
-        Session session = Session.openSession(argumentUtils.getEmail(), argumentUtils.getPassword());
-        FootballReservationHandler frh = new FootballReservationHandler(session);
-
-        boolean success = frh.reserve(LocalTime.of(7, 30), LocalDate.of(2018, 4, 18), FootballReservationHandler.FOOTBALL_C);
-        if (success) {
-            System.out.println("RESERVATION STATUS: OK");
-        } else {
-            System.out.println("RESERVATION STATUS: ERROR " + "(either entered wrong date or not found free spot");
-        }
-    }
+//    public void startApp(ArgumentUtils argumentUtils) throws IOException {
+//        Session session = Session.openSession(argumentUtils.getEmail(), argumentUtils.getPassword());
+//        FootballReservationHandler frh = new FootballReservationHandler(session);
+//
+//        boolean success = frh.reserve(LocalTime.of(7, 30), LocalDate.of(2018, 4, 18), FootballReservationHandler.FOOTBALL_C);
+//        if (success) {
+//            System.out.println("RESERVATION STATUS: OK");
+//        } else {
+//            System.out.println("RESERVATION STATUS: ERROR " + "(either entered wrong date or not found free spot");
+//        }
+//    }
 }

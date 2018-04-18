@@ -1,5 +1,6 @@
 package com.auto_ds.app;
 
+import com.auto_ds.handler.ConnectionsHandler;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -51,7 +52,7 @@ public class AvailabilityTable {
                 String href = cells.get(i).select("a").attr("href");
                 Cell c;
                 if (!href.isEmpty()) {
-                    c = new Cell(timeAt, dates.get(i), true, ConnectionsHandler.DOMAIN + href);
+                    c = new Cell(timeAt, dates.get(i), true, ConnectionsHandler.DS_DOMAIN + href);
 
                 } else {
                     c = new Cell(timeAt, dates.get(i), false, "-");
@@ -64,9 +65,9 @@ public class AvailabilityTable {
     }
 
     private void setUpUrls() throws IOException {
-        Document page = connHandl.getPageDocument(ConnectionsHandler.DOMAIN + ConnectionsHandler.RESERV_ENDPOINT);
-        sideBURL = ConnectionsHandler.DOMAIN + extractSideTableURL(page, "Część \"B\"");
-        sideCURL = ConnectionsHandler.DOMAIN + extractSideTableURL(page, "Część \"C\"");
+        Document page = connHandl.getPageDocument(ConnectionsHandler.DS_DOMAIN + ConnectionsHandler.RESERV_ENDPOINT);
+        sideBURL = ConnectionsHandler.DS_DOMAIN + extractSideTableURL(page, "Część \"B\"");
+        sideCURL = ConnectionsHandler.DS_DOMAIN + extractSideTableURL(page, "Część \"C\"");
     }
 
     private String extractSideTableURL(Document document, String side) {

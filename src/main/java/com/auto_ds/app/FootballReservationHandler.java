@@ -1,5 +1,8 @@
 package com.auto_ds.app;
 
+import com.auto_ds.handler.ConnectionsHandler;
+import org.apache.http.HttpResponse;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,12 +18,12 @@ public class FootballReservationHandler {
 
     private AvailabilityTable table;
 
-    FootballReservationHandler(Session session) throws IOException{
+    FootballReservationHandler(Session session) throws IOException {
         table = AvailabilityTable.extractTable(session);
         this.connHandl = new ConnectionsHandler(session);
     }
 
-    public boolean reserve(LocalTime time, LocalDate date, String side) throws IOException{
+    public boolean reserve(LocalTime time, LocalDate date, String side) throws IOException {
         List<Cell> sideCells;
         switch (side) {
             case FOOTBALL_B:
@@ -36,7 +39,8 @@ public class FootballReservationHandler {
     private boolean reserveBasic(LocalTime time, LocalDate date, List<Cell> cells) throws IOException {
         Optional<Cell> validCell = findValidCell(time, date, cells);
         if (validCell.isPresent()) {
-            return connHandl.executeGetMethod(validCell.get().getReserveUrl());
+            HttpResponse response = connHandl.executeGetRequest(validCell.get().getReserveUrl(), true);
+            return response.getStatusLine().getStatusCode() == 302;
         }
         return false;
     }
