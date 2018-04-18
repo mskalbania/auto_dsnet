@@ -27,6 +27,7 @@ public class ConnectionsHandler {
     public static final String FAKE_ENDPOINT = "/fakeEndPoint";
     public static final String HELP_ENDPOINT = "/help";
     public static final String FOOTBALL_RESERVE_ENDPOINT = "/footballReserve";
+    public static final String CURR_TIME_ENDPOINT = "/currentTime";
 
     private Session session;
 

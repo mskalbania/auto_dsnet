@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 import static com.auto_ds.handler.ConnectionsHandler.*;
 
 @RestController
@@ -30,5 +32,10 @@ public class UtilController {
     @GetMapping(value = FAKE_ENDPOINT)
     public ResponseEntity<String> fakeEndPoint() {
         return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @GetMapping(value = CURR_TIME_ENDPOINT)
+    public String currentTime() {
+        return LocalDateTime.now().toString();
     }
 }
