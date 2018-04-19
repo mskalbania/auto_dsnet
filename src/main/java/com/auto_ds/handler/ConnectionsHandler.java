@@ -21,7 +21,7 @@ public class ConnectionsHandler {
     public static final String DS_DOMAIN = "https://panel.dsnet.agh.edu.pl";
     public static final String RESERV_ENDPOINT = "/reserv/";
 
-    public static final String HEROKU_DOMAIN = "https://warm-oasis-36897.herokuapp.com";
+    public static final String HEROKU_DOMAIN = "https://auto-ds.herokuapp.com/";
     public static final String SHUT_DOWN_ENDPOINT = "/shutDown";
     public static final String KEEP_ALIVE_ENDPOINT = "/keepAlive";
     public static final String FAKE_ENDPOINT = "/fakeEndPoint";
