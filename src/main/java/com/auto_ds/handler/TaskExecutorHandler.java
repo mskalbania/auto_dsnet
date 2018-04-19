@@ -34,6 +34,9 @@ public class TaskExecutorHandler {
     @Autowired
     private Logger logger;
 
+    @Autowired
+    private KeepAliveHandler keepAliveHandler;
+
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
     private List<Task> scheduledTasks = new ArrayList<>();
 
@@ -43,6 +46,7 @@ public class TaskExecutorHandler {
         ScheduledFuture<Boolean> result = executor.schedule(task, task.getTaskDelayInSeconds(), TimeUnit.SECONDS);
         task.setFinishedTask(result);
         scheduledTasks.add(task);
+        keepAliveHandler.keepAlive();
     }
 
     public List<Task> getScheduledTasks() {
