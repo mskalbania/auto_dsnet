@@ -14,5 +14,4 @@ public class Config {
         Class<?> cl = injectionPoint.getMember().getDeclaringClass();
         return LoggerFactory.getLogger(cl);
     }
-
 }

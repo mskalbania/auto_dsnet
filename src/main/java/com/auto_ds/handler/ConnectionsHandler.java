@@ -27,11 +27,14 @@ public class ConnectionsHandler {
     public static final String FAKE_ENDPOINT = "/fakeEndPoint";
     public static final String HELP_ENDPOINT = "/help";
     public static final String FOOTBALL_RESERVE_ENDPOINT = "/footballReserve";
+    public static final String RESERVATION_LIST_ENDPOINT = "/reservationList";
+    public static final String CLEAR_RESERVATIONS_ENDPOINT = "/clearReservations";
     public static final String CURR_TIME_ENDPOINT = "/currentTime";
 
     private Session session;
 
-    public ConnectionsHandler(){}
+    public ConnectionsHandler() {
+    }
 
     public ConnectionsHandler(Session session) {
         this.session = session;

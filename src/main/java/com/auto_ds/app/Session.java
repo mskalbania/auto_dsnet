@@ -7,7 +7,8 @@ import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
-import org.springframework.stereotype.Component;
+
+import static com.auto_ds.app.ArgumentUtils.decrypt;
 
 public class Session {
 
@@ -40,6 +41,7 @@ public class Session {
             HttpResponse response = client.execute(request);
             Header header = response.getHeaders("Set-Cookie")[0];
             this.sessionHeader = new BasicHeader("Cookie", header.getValue());
+
         } catch (Exception e) {
             System.out.println("ERROR WHILE SETTING UP SESSION");
             e.printStackTrace();
@@ -48,6 +50,6 @@ public class Session {
 
     private String preparePostParams(String email, String password) {
         String[] emailSplit = email.split("@");
-        return "_username=" + emailSplit[0] + "%40" + emailSplit[1] + "&_password=" + password;
+        return "_username=" + emailSplit[0] + "%40" + emailSplit[1] + "&_password=" + decrypt(password);
     }
 }
